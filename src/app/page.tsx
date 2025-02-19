@@ -3,36 +3,23 @@
 import Toggle from "@/app/_component/toggle";
 import {useState} from "react";
 import {PlusIcon} from "@heroicons/react/24/solid";
+import {useRouter} from "next/navigation";
 
 export default function Home() {
-
     const [isToggleEnabled, setIsToggleEnabled] = useState(false);
+    const router = useRouter();
 
-
-    function createPrompt(ingredients: FormDataEntryValue | null): string {
-        if (ingredients) {
-            return 'fait moi une recette avec (' + ingredients + ') tu peux ajouter autre chose si ça va bien\n' +
-                'donne moi la recette sous cette forme :\n' +
-                '{title: "";ingredients: [{quantity: ""; unit: "";name: "";}]step: [""]}'
-        }
-        else {
-            return 'fait moi une recette' +
-                'donne moi la recette sous cette forme :\n' +
-                '{title: "";ingredients: [{quantity: ""; unit: "";name: "";}]step: [""]}'
-        }
-    }
 
     function sendPrompt(formData: FormData) {
         const ingredients = formData.get("ingredients");
-        const queryPrompt = createPrompt(ingredients)
-        return undefined
+        router.push(`/recipe?ingredients=${ingredients}`);
     }
 
     return (
-        <div className="px-6 py-12 sm:py-24 lg:px-8 h-full">
+        // <div className="px-6 py-12 sm:py-24 lg:px-8 h-full">
             <div className="mx-auto max-w-xl text-center">
                 <p className="text-pretty text-2xl sm:text-3xl">
-                    Bonjour quelle recette te fera plaisir aujourd'hui ?
+                    Salut quelle recette te fera plaisir aujourd'hui ?
                 </p>
                 <div className="mt-8 justify-items-center">
                     <Toggle label="Recette personnalisée" enabled={isToggleEnabled} action={setIsToggleEnabled}/>
@@ -58,7 +45,7 @@ export default function Home() {
 
                     <button
                         type="submit"
-                        className="h-16 w-2/3 justify-center inline-flex items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="h-16 mt-10 w-2/3 justify-center inline-flex items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Générer une nouvelle recette
                         <PlusIcon aria-hidden="true" className="-mr-0.5 size-5"/>
@@ -66,6 +53,6 @@ export default function Home() {
                 </form>
 
             </div>
-        </div>
+        // </div>
     );
 }
