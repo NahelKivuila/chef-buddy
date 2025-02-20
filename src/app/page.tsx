@@ -19,7 +19,7 @@ export default function Home() {
         // <div className="px-6 py-12 sm:py-24 lg:px-8 h-full">
             <div className="mx-auto max-w-xl text-center">
                 <p className="text-pretty text-2xl sm:text-3xl">
-                    Salut quelle recette te fera plaisir aujourd'hui ?
+                    Salut quelle recette te fera plaisir aujourd&#39;hui ?
                 </p>
                 <div className="mt-8 justify-items-center">
                     <Toggle label="Recette personnalisée" enabled={isToggleEnabled} action={setIsToggleEnabled}/>

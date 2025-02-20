@@ -3,6 +3,8 @@
 import {useEffect, useState} from "react";
 import Checkbox from "@/app/_component/checkbox";
 import CustomListbox from "@/app/_component/customListbox";
+import {RateLimiter} from "@/services/rateLimiterTokenBucket";
+// import OpenAI from "openai";
 
 const recipeResponse = "{\n" +
     "  \"title\": \"Poulet Sauté au Riz Parfumé\",\n" +
@@ -81,19 +83,32 @@ export interface RecipeJson {
 }
 
 const numberOfPerson = [
-    { number: 1 },
-    { number: 2 },
-    { number: 3 },
-    { number: 4 },
-    { number: 5 },
-    { number: 6 },
-    { number: 7 },
-    { number: 8 },
-    { number: 9 },
-    { number: 10 },
+    {number: 1},
+    {number: 2},
+    {number: 3},
+    {number: 4},
+    {number: 5},
+    {number: 6},
+    {number: 7},
+    {number: 8},
+    {number: 9},
+    {number: 10},
 ]
 
-function callApi(request: string): RecipeJson {
+const rateLimiter = new RateLimiter({refillRate: 60000, maxTokens: 1});
+const id = 'token'
+
+async function callApi(request: string): Promise<RecipeJson | null> {
+    const isRateLimited = rateLimiter.limit(id);
+    console.log(isRateLimited)
+
+    if (isRateLimited) {
+        console.log('too many');
+        return null;
+    }
+    console.log(request)
+    const data = await fetch('/recipe')
+    console.log(data)
     return JSON.parse(recipeResponse);
 }
 
@@ -114,12 +129,21 @@ export default function Recipe() {
     }
 
     useEffect(() => {
-        let params = new URLSearchParams(document.location.search);
-        let ingredients = params.get("ingredients");
-        const requestPrompt = createPrompt(ingredients);
+        const loadData = async () => {
+            const params = new URLSearchParams(document.location.search);
+            const ingredients = params.get("ingredients");
+            const requestPrompt = createPrompt(ingredients);
 
-        setRecipe(callApi(requestPrompt))
+            callApi(requestPrompt).then(r => {
+                if (r)
+                    setRecipe(r)
+            });
+        }
 
+        // setRecipe(callApi(requestPrompt))
+        // callApi(requestPrompt).then
+        // const recipeCreated = await callApi(requestPrompt)
+        loadData().then();
     }, []);
 
     return (
@@ -128,7 +152,8 @@ export default function Recipe() {
                 <div>
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <p className="text-2xl font-semibold h-full">Ingredients pour {selected.number} {selected.number == 1 ? 'personne' : 'personnes'} :</p>
+                            <p className="text-2xl font-semibold h-full">Ingredients
+                                pour {selected.number} {selected.number == 1 ? 'personne' : 'personnes'} :</p>
                             <CustomListbox list={numberOfPerson} action={setSelected} selected={selected}/>
                         </div>
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -140,7 +165,7 @@ export default function Recipe() {
                                     <div className="min-w-0 flex-1">
                                         <span aria-hidden="true" className="absolute inset-0"/>
                                         <p className="font-medium text-gray-900">{ingredient.name}</p>
-                                        <p className="truncate text-gray-500">{ingredient.quantity * (selected.number/2)} {ingredient.unit}</p>
+                                        <p className="truncate text-gray-500">{ingredient.quantity * (selected.number / 2)} {ingredient.unit}</p>
                                     </div>
                                     <div className="z-10">
                                         <Checkbox/>

@@ -29,9 +29,10 @@ const navigation = [
         ),
     },
 ]
+const date = new Date().getFullYear();
 
 export default function Footer() {
-    const date = new Date().getFullYear()
+
 
     return (
         <footer className="bg-slate-900">
