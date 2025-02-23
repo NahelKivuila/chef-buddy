@@ -3,6 +3,8 @@ import {zodResponseFormat} from "openai/helpers/zod";
 import {RecipeJson, RecipeResponse} from "@/model/recipe";
 import OpenAI from "openai";
 import {RateLimiter} from "@/services/rateLimiterTokenBucket";
+import {redirect} from "next/navigation";
+import {toast} from "sonner";
 
 const rateLimiter = new RateLimiter({refillRate: 60000, maxTokens: 1});
 const id = 'token'
@@ -22,25 +24,18 @@ function getCompletion(prompt: string) {
     });
 }
 
-export async function callApi(request: string): Promise<RecipeJson | null> {
+export async function callApi(prompt: string): Promise<RecipeJson | null> {
     const isRateLimited = rateLimiter.limit(id);
-    console.log(isRateLimited)
 
     if (isRateLimited) {
-        // TODO : add messageService to print too many
-        console.log('too many');
-        return null;
+        redirect('/no-more-call')
     }
-    const completion = await getCompletion(request);
-    console.log(request)
-
-
-
+    const completion = await getCompletion(prompt);
 
     const recipeResponse = completion.choices[0].message;
 
     if (recipeResponse.refusal) {
-        // TODO : handle the refusal with a message service
+        toast.error("Un problème est survenu, veuillez réessayer ou me contacter si cela persiste")
         return null;
     }
 

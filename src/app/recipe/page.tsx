@@ -20,6 +20,5 @@ export default async function Recipe({searchParams} : {searchParams: {ingredient
                 <RecipeSteps recipe={recipe} />
             }
         </div>
-    )
-
+    );
 }

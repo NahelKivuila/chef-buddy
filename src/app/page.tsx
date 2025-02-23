@@ -2,21 +2,27 @@
 
 import Toggle from "@/app/_component/toggle";
 import {useState} from "react";
-import {PlusIcon} from "@heroicons/react/24/solid";
 import {useRouter} from "next/navigation";
+import Loading from "@/app/_component/loading";
 
 export default function Home() {
     const [isToggleEnabled, setIsToggleEnabled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
 
 
     function sendPrompt(formData: FormData) {
         const ingredients = formData.get("ingredients");
-        router.push(`/recipe?ingredients=${ingredients}`);
+        setIsLoading(true)
+
+        if (ingredients){
+            router.push(`/recipe?ingredients=${ingredients}`);
+        } else {
+            router.push('/recipe')
+        }
     }
 
     return (
-        // <div className="px-6 py-12 sm:py-24 lg:px-8 h-full">
             <div className="mx-auto max-w-xl text-center">
                 <p className="text-pretty text-2xl sm:text-3xl">
                     Salut quelle recette te fera plaisir aujourd&#39;hui ?
@@ -42,17 +48,8 @@ export default function Home() {
                             </div>
                         </div>
                     }
-
-                    <button
-                        type="submit"
-                        className="h-16 mt-10 w-2/3 justify-center inline-flex items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Générer une nouvelle recette
-                        <PlusIcon aria-hidden="true" className="-mr-0.5 size-5"/>
-                    </button>
+                    <Loading isDisable={isLoading}/>
                 </form>
-
             </div>
-        // </div>
     );
 }
