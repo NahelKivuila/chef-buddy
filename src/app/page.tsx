@@ -1,26 +1,37 @@
 "use client";
 
 import Toggle from "@/app/_component/toggle";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import Loading from "@/app/_component/loading";
+import {Button} from "@headlessui/react";
+import {PlusIcon} from "@heroicons/react/24/solid";
+
+function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(' ')
+}
 
 export default function Home() {
     const [isToggleEnabled, setIsToggleEnabled] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+    const [formData, setFormData] = useState<FormDataEntryValue | null>(null)
     const router = useRouter();
-
 
     function sendPrompt(formData: FormData) {
         const ingredients = formData.get("ingredients");
-        setIsLoading(true)
-
-        if (ingredients){
-            router.push(`/recipe?ingredients=${ingredients}`);
-        } else {
-            router.push('/recipe')
-        }
+        setFormData(ingredients)
+        setIsLoading(true);
     }
+
+    useEffect(() => {
+        if (isLoading) {
+            if (formData){
+                router.push(`/recipe?ingredients=${formData}`);
+            } else {
+                router.push('/recipe')
+            }
+        }
+    }, [isLoading, formData, router])
 
     return (
             <div className="mx-auto max-w-xl text-center">
@@ -48,8 +59,23 @@ export default function Home() {
                             </div>
                         </div>
                     }
-                    <Loading isDisable={isLoading}/>
+                    <Button
+                        disabled={isLoading}
+                        type="submit"
+                        className={classNames(
+                            isLoading
+                                ? 'cursor-not-allowed bg-slate-400'
+                                : 'hover:bg-slate-500 bg-slate-600',
+                            'relative h-16 mt-10 w-2/3  justify-center inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 focus-visible:outline '
+                        )}
+                    >
+                        Générer une nouvelle recette
+                        <PlusIcon aria-hidden="true" className="-mr-0.5 size-5"/>
+
+                        <Loading />
+                    </Button>
                 </form>
+
             </div>
     );
 }

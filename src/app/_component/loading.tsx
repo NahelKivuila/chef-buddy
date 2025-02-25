@@ -6,30 +6,12 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import {Button} from "@headlessui/react";
-import {PlusIcon} from "@heroicons/react/24/solid";
 
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
-}
-
-export default function Loading({isDisable} : {isDisable: boolean}) {
+export default function Loading() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button
-                    disabled={isDisable}
-                    type="submit"
-                    className={classNames(
-                        isDisable
-                        ? 'cursor-not-allowed'
-                        : 'hover:bg-slate-500',
-                        'h-16 mt-10 w-2/3 bg-slate-600 justify-center inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 focus-visible:outline '
-                    )}
-                >
-                    Générer une nouvelle recette
-                    <PlusIcon aria-hidden="true" className="-mr-0.5 size-5"/>
-                </Button>
+                <div className="absolute inset-0 w-full h-full"></div>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
