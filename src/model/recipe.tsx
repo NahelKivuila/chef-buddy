@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from 'zod';
 
 export interface RecipeJson {
     title: string;
@@ -14,10 +14,10 @@ const Ingredient = z.object({
     name: z.string(),
     quantity: z.number(),
     unit: z.string(),
-})
+});
 
 export const RecipeResponse = z.object({
     title: z.string(),
     ingredients: z.array(Ingredient),
-    steps: z.array(z.string())
-})
+    steps: z.array(z.string()),
+});

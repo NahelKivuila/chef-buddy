@@ -11,7 +11,10 @@ class RateLimiter {
     constructor(config: { refillRate: number; maxTokens: number }) {
         this.refillRate = config.refillRate;
         this.maxTokens = config.maxTokens;
-        this.idToBucket = new Map<string, { tokens: number; lastRefill: number }>();
+        this.idToBucket = new Map<
+            string,
+            { tokens: number; lastRefill: number }
+        >();
     }
 
     limit(id: string) {
@@ -29,7 +32,10 @@ class RateLimiter {
             (now - bucket.lastRefill) / this.refillRate
         );
         if (tokensToRefill > 0) {
-            bucket.tokens = Math.min(this.maxTokens, bucket.tokens + tokensToRefill);
+            bucket.tokens = Math.min(
+                this.maxTokens,
+                bucket.tokens + tokensToRefill
+            );
             bucket.lastRefill = now;
         }
 

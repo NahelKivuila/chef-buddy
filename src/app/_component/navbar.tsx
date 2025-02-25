@@ -1,6 +1,6 @@
-import {Disclosure} from '@headlessui/react'
-import Image from "next/image";
-import Link from "next/link";
+import { Disclosure } from '@headlessui/react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Navbar() {
     return (
@@ -21,11 +21,12 @@ export default function Navbar() {
                         </div>
                     </div>
                     <div className="justify-items-center">
-                        <h1 className="font-bold text-3xl text-white text-center">Chef Buddy</h1>
+                        <h1 className="font-bold text-3xl text-white text-center">
+                            Chef Buddy
+                        </h1>
                     </div>
                 </div>
             </div>
-
         </Disclosure>
     );
 }
