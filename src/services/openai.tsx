@@ -1,10 +1,10 @@
 'use server';
+import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { RecipeJson, RecipeResponse } from '@/model/recipe';
-import OpenAI from 'openai';
 import { RateLimiter } from '@/services/rateLimiterTokenBucket';
 
-const rateLimiter = new RateLimiter({ refillRate: 60000, maxTokens: 1 });
+const rateLimiter = new RateLimiter({ refillRate: 60000, maxTokens: 10 });
 const id = 'token';
 const openai = new OpenAI();
 

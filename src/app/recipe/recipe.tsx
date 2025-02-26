@@ -1,10 +1,10 @@
 'use client';
 
-import { RecipeJson } from '@/model/recipe';
-import Checkbox from '@/app/_component/checkbox';
 import { useState } from 'react';
-import { numberOfPerson } from '@/model/number-of-person';
+import Checkbox from '@/app/_component/checkbox';
 import CustomListbox from '@/app/_component/customListbox';
+import { numberOfPerson } from '@/model/number-of-person';
+import { RecipeJson } from '@/model/recipe';
 
 export default function RecipeSteps({ recipe }: { recipe: RecipeJson }) {
     const [selected, setSelected] = useState(numberOfPerson[1]);
