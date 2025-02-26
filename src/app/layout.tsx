@@ -30,7 +30,7 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
                 <Navbar />
-                <div className="px-6 py-12 sm:py-24 lg:px-8 m-auto">
+                <div className="mx-auto lg:mx-20 px-6 py-12 sm:py-24 lg:px-8 my-auto">
                     <main className="h-full">{children}</main>
                 </div>
                 <Toaster position="top-right" richColors />

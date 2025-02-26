@@ -1,5 +1,7 @@
 'use client';
 
+import { ArrowLeftIcon } from '@heroicons/react/24/solid';
+import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import Checkbox from '@/app/_component/checkbox';
 import CustomListbox from '@/app/_component/customListbox';
@@ -11,6 +13,16 @@ export default function RecipeSteps({ recipe }: { recipe: RecipeJson }) {
 
     return (
         <div>
+            <button
+                type="button"
+                className="flex rounded-md bg-slate-200 px-3.5 py-2.5 text-sm font-semibold text-slate-800-600 shadow-sm hover:bg-slate-300 mb-6"
+                onClick={() => redirect('/')}>
+                <ArrowLeftIcon
+                    aria-hidden="true"
+                    className="-ml-0.5 size-5 mr-2"
+                />
+                Retour à l&#39;accueil
+            </button>
             <div>
                 <div className="justify-center mb-10">
                     <p className="text-4xl font-bold h-full text-center">

@@ -11,7 +11,7 @@ function createPrompt(ingredients: string | null): string {
             ') tu peux ajouter autre chose si ça va bien. pour 2 personnes'
         );
     } else {
-        return 'fait moi une recette pour 2 personnes quelque chose de différents';
+        return 'Créer moi une nouvelle recette (change un peu) pour 2 personnes';
     }
 }
 
@@ -40,14 +40,5 @@ export default async function Recipe({
         }
     }
 
-    return (
-        <div>
-            {request && (
-                <RecipeSteps recipe={request} />
-                // typeof resp === ''
-                //     ? <RecipeSteps resp={request} />
-                //     : <RecipeSteps resp={request}/>
-            )}
-        </div>
-    );
+    return <div>{request && <RecipeSteps recipe={request} />}</div>;
 }
